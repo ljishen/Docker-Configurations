@@ -1,0 +1,66 @@
+# Turn off that annoying start up message
+startup_message off
+
+# make the shell in every window a login shell
+shell -bash
+
+# Turn the even more annoying whole-screen-flash-on-tab-complete "feature"
+vbell off
+
+# Allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# Tell screen how to set colors. AB = background, AF=foreground
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Enables use of shift-PgUp and shift-PgDn
+termcapinfo xterm|xterms|xs|rxvt ti@:te@
+
+# Erase background with current bg color
+defbce "on"
+
+# Enable 256 color term
+term xterm-256color
+
+# Cache 30000 lines for scroll back
+defscrollback 30000
+
+# New mail notification
+# backtick 101 30 15 $HOME/bin/mailstatus.sh
+
+# hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW}|%{KY}%101`%{KW}|%D %M %d %Y%{= Kc} %C%A%{-}'
+# the following two lines give a two-line status, with the current window highlighted
+hardstatus alwayslastline
+# http://www.gnu.org/software/screen/manual/html_node/String-Escapes.html
+#
+# %{= wK} : set colors to bright white (W) on bright black (K) and keep current text styles (=)
+# %H      : hostname
+# [       : opening bracket character
+# %`      : print output of 'backtick' command (defined elsewhere in .screenrc)
+# ]       : closing bracket character
+# %{= wW} : set colors to white (w) on bright black (K) and keep current text styles (=)
+# |       : bar character
+# ${-}    : restore colors to previous colors / undo last color change
+# %-Lw    : list windows before current window (L [optional] = "include flags")
+# %{= bW} : set colors to bright white (W) on blue (b) and keep current text styles (=)
+# %f      : window flags
+# %t      : window title
+# %{-}    : restore colors to previous colors / undo last color change
+# %+Lw    : list windows after current window (L [optional] = "include flags")
+# %=      : expand to fill all space (used here to make remaining content flush right)
+# %C      : current time (12-hr; 24-hr is %c)
+# %a      : am/pm (lowercase; uppercase is %A)
+# %Y      : current year
+# -       : hyphen character
+# %m      : current month (0-padded; %M for "Jan" etc.)
+# -       : hyphen character
+# %d      : current date (0-padded)
+hardstatus string "%{= KW} %H [%`] %{= Kw}|%{-} %-Lw%{= bW}%n%f %t%{-}%+Lw %=%C%a %Y-%M-%d"
+
+# change command character from ctrl-a to ctrl-b (emacs users may want this)
+#escape ^Bb
+
+# Hide hardstatus: ctrl-a f 
+bind f eval "hardstatus ignore"
+# Show hardstatus: ctrl-a F
+bind F eval "hardstatus alwayslastline"
