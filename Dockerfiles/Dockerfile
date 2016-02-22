@@ -40,6 +40,8 @@ ENV PATH /root/softwares/apache-ant-1.9.6/bin:$PATH
 RUN sudo apt-get install -y screen
 COPY .screenrc /root
 
+COPY .vimrc /root
+
 # Install Git
 RUN sudo apt-get install -y git
 
