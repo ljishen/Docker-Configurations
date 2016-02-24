@@ -49,6 +49,6 @@ RUN sudo apt-get install -y git
 # See http://manpages.ubuntu.com/manpages/raring/man1/bgzip.1.html
 RUN sudo apt-get install -y tabix
 
-EXPOSE 80 8000-8010
+EXPOSE 80 2202 8000-8010
 
 WORKDIR /root

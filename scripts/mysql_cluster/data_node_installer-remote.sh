@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
 PACKAGE=#PACKAGE
-DESC=#DESC
+DEST=#DEST
 
 WORKDIR=/usr/local/mysql
 
-tar -C /usr/local -xzvf ${DESC}/${PACKAGE}
+tar -C /usr/local -xzvf ${DEST}/${PACKAGE}
 ln -s /usr/local/${PACKAGE%.tar.gz} ${WORKDIR}
 
 BINDIR=/usr/local/bin
@@ -15,4 +15,5 @@ cp ${WORKDIR}/bin/ndbmtd ${BINDIR}/ndbmtd
 
 chmod +x ${BINDIR}/ndb*
 
-echo -e "\nThe data directory on each machine hosting a data node is /usr/local/mysql/data."
+echo -e "\nDone!"
+echo "The data directory on each machine hosting a data node is /usr/local/mysql/data."

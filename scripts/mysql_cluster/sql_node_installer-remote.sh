@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PACKAGE=#PACKAGE
-DESC=#DESC
+DEST=#DEST
 
 apt-get install libaio1
 
@@ -10,7 +10,7 @@ useradd -g mysql -s /bin/false mysql
 
 WORKDIR=/usr/local/mysql
 
-tar -C /usr/local -xzvf ${DESC}/${PACKAGE}
+tar -C /usr/local -xzvf ${DEST}/${PACKAGE}
 ln -s /usr/local/${PACKAGE%.tar.gz} ${WORKDIR}
 
 ${WORKDIR}/scripts/mysql_install_db --user=mysql --basedir=${WORKDIR}

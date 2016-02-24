@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
 PACKAGE=#PACKAGE
-DESC=#DESC
+DEST=#DEST
 
 WORKDIR=/usr/local/mysql
 
-tar -C /usr/local -xzvf ${DESC}/${PACKAGE}
+tar -C /usr/local -xzvf ${DEST}/${PACKAGE}
 ln -s /usr/local/${PACKAGE%.tar.gz} ${WORKDIR}
 
 BINDIR=/usr/local/bin
