@@ -13,7 +13,7 @@ WORKDIR=/usr/local/mysql
 tar -C /usr/local -xzvf ${DEST}/${PACKAGE}
 ln -s /usr/local/${PACKAGE%.tar.gz} ${WORKDIR}
 
-${WORKDIR}/scripts/mysql_install_db --user=mysql --basedir=${WORKDIR}
+${WORKDIR}/scripts/mysql_install_db --user=mysql --basedir=${WORKDIR} --datadir=${WORKDIR}/data
 
 chown -R root ${WORKDIR}
 chown -R mysql ${WORKDIR}/data
