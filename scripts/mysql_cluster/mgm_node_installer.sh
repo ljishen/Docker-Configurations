@@ -26,7 +26,7 @@ if [ $# -eq 0 ]; then
         read -p "Do you want to start a new ${CONTAINER_NAME} container? (yes/no) " yn
         case $yn in
             [Yy]*) # grep -w : match whole word
-                   source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic --name ${CONTAINER_NAME} -d
+                   source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic_v2 --name ${CONTAINER_NAME} -d -p 2202
                    containerId=$(docker ps | grep -w ${CONTAINER_NAME} | awk '{print $1}')
                    ;;
             *    ) echo -e "\nYou can specify a CONTAINER_ID with name of ${CONTAINER_NAME}" 1>&2

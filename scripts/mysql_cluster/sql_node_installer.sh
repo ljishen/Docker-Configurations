@@ -25,7 +25,7 @@ if [ $# -eq 0 ]; then
         [Yy]*) # grep -w : match whole word
                counts=$(docker ps | grep -w ${CONTAINER_NAME_PREFIX}_.* | awk '{print $1}' | wc -l)
                newContainerName=${CONTAINER_NAME_PREFIX}_$((${counts}+1))
-               source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic --name ${newContainerName} -d
+               source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic_v2 --name ${newContainerName} -d -p 2202
                containerId=$(docker ps | grep -w ${newContainerName} | awk '{print $1}')
                ;;
         *    ) echo -e "\nYou can specify a CONTAINER_ID with name of prefix ${CONTAINER_NAME_PREFIX}_" 1>&2

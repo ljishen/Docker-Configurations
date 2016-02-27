@@ -2,4 +2,4 @@
 
 tag=$1
 
-docker build -t ljishen/dev:${tag} ../Dockerfiles
+docker build -t ljishen/dev:${tag} -f ../Dockerfiles/Dockerfile ../
