@@ -33,6 +33,14 @@ if [ -z "$tag" ]; then
     usage
 fi
 
-hostIp=$(hostname -I | awk '{print $3}')
-
-docker run -e DISPLAY=${DISPLAY} -v "/tmp/.X11-unix:/tmp/.X11-unix" ${name} ${detached} ${ports} -ti ljishen/dev:${tag}
+docker run -e DISPLAY=${DISPLAY} \
+    -v /mnt/nfs/ljishen:/root/volume \
+    -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+    -v ~/.screenrc:/root/.screenrc:ro \
+    -v ~/.vimrc:/root/.vimrc \
+    -v ~/.bash_history:/root/.bash_history \
+    ${name} \
+    ${detached} \
+    ${ports} \
+    -ti \
+    ljishen/dev:${tag}
