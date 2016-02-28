@@ -15,5 +15,5 @@ cp ${WORKDIR}/bin/ndbmtd ${BINDIR}/ndbmtd
 
 chmod +x ${BINDIR}/ndb*
 
-echo -e "\nDone!"
-echo "The data directory on each machine hosting a data node is /usr/local/mysql/data."
+echo -e "\nThe data directory on each machine hosting a data node is /usr/local/mysql/data."
+echo "Please execute "ndbd" to start the ndbd process."

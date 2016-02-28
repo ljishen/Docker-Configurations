@@ -1,5 +1,19 @@
 #!/bin/bash -e
 
+getFileLocation() {
+    local file=$1
+
+    if [ -z "$file" ]; then
+        echo "Please specify a file as argument" 1>&2
+        echo "Usage: ${FUNCNAME[0]} <file>" 1>&2
+        return 1
+    fi
+ 
+    # See http://www.cyberciti.biz/faq/unix-linux-appleosx-bsd-bash-script-find-what-directory-itsstoredin/
+    echo $(dirname $(readlink -f ${file}))
+}
+
+
 findIpByContainerId() {
     local containerId=$1
 
@@ -16,12 +30,17 @@ findIpByContainerId() {
     echo ${ip}
 }
 
-findIpByName() {
+findContainerIdByName() {
     local nodeName=$1
+
+    local callingFunc=${FUNCNAME[0]} 
+    if [ -n "$2" ]; then
+        callingFunc=$2
+    fi
 
     if [ -z "$nodeName" ]; then
         echo "Plase specify the node name to inspect." 1>&2
-        echo "Usage: ${FUNCNAME[0]} <name>" 1>&2
+        echo "Usage: ${callingFunc} <name>" 1>&2
 
         # The exit status may be explicitly specified by a return statement,
         # otherwise it is the exit status of the last command in the function
@@ -35,13 +54,24 @@ findIpByName() {
     local containerId=$(docker ps | grep -w ${nodeName} | awk '{print $1}')
     if [ -z "$containerId" ]; then
         echo "Cannot find container with name ${nodeName}. Please start the container first." 1>&2
-        return 1
+        return
     fi
 
     # 1>&2 is used to redirect the output of echo to stderr,
     # such that $(...) call of this script will not include the output.
     # See https://en.wikipedia.org/wiki/Usage_message
     echo "The CONTAINER ID with name of ${nodeName} is ${containerId}" 1>&2
+
+    echo ${containerId}
+}
+
+findIpByName() {
+    # It is always recommendable to pass parameters within quotes.
+    # See http://stackoverflow.com/questions/19376648/pass-empty-variable-in-bash
+    local containerId=$(findContainerIdByName "$1" ${FUNCNAME[0]})
+    if [ -z "$containerId" ]; then
+        return 1
+    fi
 
     echo $(findIpByContainerId ${containerId})
 }

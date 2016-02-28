@@ -14,8 +14,10 @@ if [ "$1" = "-h" ]; then
     usage
 fi
 
-# See http://www.cyberciti.biz/faq/unix-linux-appleosx-bsd-bash-script-find-what-directory-itsstoredin/
-SCRIPT_LOCATION=$(dirname $(readlink -f ${SCRIPT}))
+# Import utility functions
+source utils.sh
+
+SCRIPT_LOCATION=$(getFileLocation ${SCRIPT})
 
 CONTAINER_NAME_PREFIX="sql_node"
 
@@ -25,8 +27,8 @@ if [ $# -eq 0 ]; then
         [Yy]*) # grep -w : match whole word
                counts=$(docker ps | grep -w ${CONTAINER_NAME_PREFIX}_.* | awk '{print $1}' | wc -l)
                newContainerName=${CONTAINER_NAME_PREFIX}_$((${counts}+1))
-               source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic_v2 --name ${newContainerName} -d -p 2202
-               containerId=$(docker ps | grep -w ${newContainerName} | awk '{print $1}')
+               source $(dirname ${SCRIPT_LOCATION})/run.sh --tag genomic_v2 --name ${newContainerName} -d -p 2202 -p 22
+               containerId=$(findContainerIdByName ${newContainerName})
                ;;
         *    ) echo -e "\nYou can specify a CONTAINER_ID with name of prefix ${CONTAINER_NAME_PREFIX}_" 1>&2
                usage
@@ -42,9 +44,6 @@ echo -e "\nTarget container is ${containerId}"
 # Deploy my.cnf
 # Automatically find the container id of management node (name=mgm_node).
 echo -e "\nDeploying my.cnf..."
-
-# Import utility functions
-source ${SCRIPT_LOCATION}/utils.sh
 
 MGM_NODE_NAME="mgm_node"
 mgmNodeIp=$(findIpByName ${MGM_NODE_NAME})
@@ -63,6 +62,6 @@ docker cp ${MY_CNF_PATH_TMP} ${containerId}:/etc/my.cnf
 
 rm ${MY_CNF_PATH_TMP}
 
-# The source script can access the current context, since they are executed in the same process.
+# The first and third methods execute the script as another process, so variables and functions in the other script will not be accessible.
 # See http://stackoverflow.com/questions/8352851/how-to-call-shell-script-from-another-shell-script
-source ${SCRIPT_LOCATION}/package_installer.sh
+bash ${SCRIPT_LOCATION}/package_installer.sh "${containerId}" "mysql-cluster-gpl*linux*x86_64.tar.gz" "${SCRIPT}"

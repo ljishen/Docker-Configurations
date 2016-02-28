@@ -14,4 +14,7 @@ cp ${WORKDIR}/bin/ndb_mgm* ${BINDIR}
 
 chmod +x ${BINDIR}/ndb_mgm*
 
-echo -e "\nDone!"
+echo -e "\nPlease execute the following commands:"
+echo "ndb_mgmd -f /var/lib/mysql-cluster/config.ini"
+echo "ndb_mgm"
+echo "SHOW"

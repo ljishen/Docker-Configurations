@@ -9,8 +9,6 @@ if [ $# -eq 0 ]; then
     usage
 fi
 
-ports="-P"
-
 while (( "$#" )); do
     if [ "$1" = "--tag" ]; then
         tag=$2
@@ -22,13 +20,19 @@ while (( "$#" )); do
         detached="-d"
         shift
     elif [ "$1" = "-p" ]; then
-        ports="$1 $2"
+        ports="${ports} $1 $2"
         shift 2
     fi
 done
+
+if [ -z "$ports" ]; then
+    ports="-P"
+fi
 
 if [ -z "$tag" ]; then
     usage
 fi
 
-docker run ${name} ${detached} ${ports} -t -i ljishen/dev:${tag}
+hostIp=$(hostname -I | awk '{print $3}')
+
+docker run -e DISPLAY=${DISPLAY} -v "/tmp/.X11-unix:/tmp/.X11-unix" ${name} ${detached} ${ports} -ti ljishen/dev:${tag}
