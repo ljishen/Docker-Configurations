@@ -34,10 +34,10 @@ if [ -z "$tag" ]; then
 fi
 
 docker run -e DISPLAY=${DISPLAY} \
-    -v /mnt/nfs/ljishen:/root/volume \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
     -v ~/.screenrc:/root/.screenrc:ro \
-    -v ~/.vimrc:/root/.vimrc \
+    -v ~/.vimrc:/root/.vimrc:ro \
+    -v /mnt/nfs/ljishen:/root/volume \
     -v ~/.bash_history:/root/.bash_history \
     ${name} \
     ${detached} \

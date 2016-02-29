@@ -15,7 +15,7 @@ if [ "$1" = "-h" ]; then
 fi
 
 # Import utility functions
-source utils.sh
+source ../utils.sh
 
 SCRIPT_LOCATION=$(getFileLocation ${SCRIPT})
 

@@ -3,7 +3,7 @@
 SCRIPT=$0
 
 # Import utility functions
-source utils.sh
+source ../utils.sh
 
 sqlNodeId=$(findContainerIdByName "sql_node_1")
 if [ -z "$sqlNodeId" ]; then

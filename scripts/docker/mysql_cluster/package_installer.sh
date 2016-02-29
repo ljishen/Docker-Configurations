@@ -14,11 +14,11 @@ CALLING_SCRIPT=$3
 echo -e "\nCopying Installation Resources to Container..."
 
 # Import utility functions
-source utils.sh
+source ../utils.sh
 
 SCRIPT_LOCATION=$(getFileLocation ${CALLING_SCRIPT})
 
-source ${SCRIPT_LOCATION}/constants.sh
+source `dirname ${SCRIPT_LOCATION}`/constants.sh
 
 packagePath=$(find ${SOFTWARES_FOLDER_PATH} -name "${PACKAGE_NAME_PATTERN}")
 package=$(basename ${packagePath})
