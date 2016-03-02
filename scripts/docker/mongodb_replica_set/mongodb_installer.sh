@@ -33,5 +33,8 @@ source `dirname ${SCRIPT_LOCATION}`/constants.sh
 echo -e "\nCopy ${REMOTE_SCRIPT} to target container"
 docker cp ${SCRIPT_LOCATION}/${REMOTE_SCRIPT} ${containerId}:${CONTAINER_DEST}
 
-echo -e "\nDone!"
-echo "Please execute script ${CONTAINER_DEST}/${REMOTE_SCRIPT} in container ${containerId}."
+echo -e "\nDone!\n"
+echo "
+(1) Execute script ${SCRIPT_LOCATION}/hosts_updater.sh on docker host only once after all ${CONTAINER_NAME_PREFIX}s installed."
+echo "
+(2) Execute script ${CONTAINER_DEST}/${REMOTE_SCRIPT} in container ${containerId}."

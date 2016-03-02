@@ -30,6 +30,7 @@ findIpByContainerId() {
     echo ${ip}
 }
 
+# This function that feeds a name pattern, and return a print list of CONTAINER IDs.
 findContainerIdByName() {
     local nodeName=$1
 
