@@ -29,7 +29,7 @@ echo "
 (4) Add the remaining members with the rs.add() method. You must be connected to the primary to add members to a replica set.
 
 rs.add() can, in some cases, trigger an election. If the mongod you are connected to becomes a secondary, you need to connect the mongo shell to the new primary to continue adding new replica set members. Use rs.status() to identify the primary in the replica set.
-    rs.add("mongodb1.example.net")"
+    rs.add('<hostname>:27018')"
 echo "
 (5) Check the status of the replica set
     rs.status()"

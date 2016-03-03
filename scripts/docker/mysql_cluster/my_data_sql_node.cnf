@@ -2,6 +2,10 @@
 # Options for mysqld process:
 ndbcluster                      # run NDB storage engine
 
+# By default, client connections begin with autocommit set to 1.
+# This setting causes clients to begin with a default of 0.
+autocommit=0
+
 [mysql_cluster]
 # Options for MySQL Cluster processes:
 ndb-connectstring=#MGM_NODE_IP  # location of management server

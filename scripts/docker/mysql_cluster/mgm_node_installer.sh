@@ -61,9 +61,10 @@ dataNodeIps[0]=$(findIpByContainerId ${dataNodes[0]})
 dataNodeIps[1]=$(findIpByContainerId ${dataNodes[1]})
 
 sqlNodeIps[0]=$(findIpByContainerId ${sqlNodes[0]})
+sqlNodeIps[1]=$(findIpByContainerId ${sqlNodes[1]})
 
 CONFIG_TEMPLATE_PATH=${SCRIPT_LOCATION}/config.ini
-content=$(patternReplace ${CONFIG_TEMPLATE_PATH} MGM_NODE_IP=${mgmNodeIp} DATA_NODE_IP_1=${dataNodeIps[0]} DATA_NODE_IP_2=${dataNodeIps[1]} SQL_NODE_IP=${sqlNodeIps[0]})
+content=$(patternReplace ${CONFIG_TEMPLATE_PATH} MGM_NODE_IP=${mgmNodeIp} DATA_NODE_IP_1=${dataNodeIps[0]} DATA_NODE_IP_2=${dataNodeIps[1]} SQL_NODE_IP_1=${sqlNodeIps[0]} SQL_NODE_IP_2=${sqlNodeIps[1]})
 
 CONFIG_TEMPLATE_PATH_TMP=${CONFIG_TEMPLATE_PATH}.tmp
 echo "${content}" > ${CONFIG_TEMPLATE_PATH_TMP}
