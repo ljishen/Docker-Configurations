@@ -4,7 +4,12 @@ ndbcluster                      # run NDB storage engine
 
 # By default, client connections begin with autocommit set to 1.
 # This setting causes clients to begin with a default of 0.
-autocommit=0
+autocommit=1
+bulk_insert_buffer_size=134217728
+
+# Fix the error "InnoDB: Warning: io_setup() failed with EAGAIN", but not recommend.
+# See http://remotemysqldba.blogspot.com/2012/05/innodb-warning-iosetup.html
+# innodb_use_native_aio=0
 
 [mysql_cluster]
 # Options for MySQL Cluster processes:

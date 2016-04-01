@@ -1,5 +1,4 @@
-# VERSION 1.1
-
+# VERSION 1.0
 FROM ubuntu:latest
 
 MAINTAINER Jianshen Liu <jliu120@ucsc.edu>
@@ -24,28 +23,8 @@ RUN sudo apt-get install -y vim
 RUN mkdir /root/softwares
 WORKDIR /root/softwares
 
-# Install Apache Maven 3.3.9
-RUN wget http://mirrors.ocf.berkeley.edu/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
-RUN tar xzvf apache-maven-3.3.9-bin.tar.gz
-RUN rm apache-maven-3.3.9-bin.tar.gz
-ENV PATH /root/softwares/apache-maven-3.3.9/bin:$PATH
-
-# Install Apache Ant 1.9.6
-RUN wget http://apache.go-parts.com//ant/binaries/apache-ant-1.9.6-bin.tar.gz
-RUN tar xzvf apache-ant-1.9.6-bin.tar.gz
-RUN rm apache-ant-1.9.6-bin.tar.gz
-ENV PATH /root/softwares/apache-ant-1.9.6/bin:$PATH
-
 # Install screen
 RUN sudo apt-get install -y screen
 
 # Install Git
 RUN sudo apt-get install -y git
-
-# Install bgzip and tabix
-# See http://manpages.ubuntu.com/manpages/raring/man1/bgzip.1.html
-RUN sudo apt-get install -y tabix
-
-EXPOSE 80
-
-WORKDIR /root

@@ -37,7 +37,8 @@ docker run -e DISPLAY=${DISPLAY} \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
     -v ~/.screenrc:/root/.screenrc:ro \
     -v ~/.vimrc:/root/.vimrc:ro \
-    -v /mnt/nfs/ljishen:/root/volume \
+    -v /mnt/nfs/ljishen:/root/volume/remote \
+    -v ~/data:/root/volume/local \
     -v ~/.bash_history:/root/.bash_history \
     ${name} \
     ${detached} \

@@ -10,6 +10,7 @@ IndexMemory=20G   # How much memory to allocate for index storage
                   # only about 500KB, this should be more than enough for
                   # this example Cluster setup.
 MaxNoOfConcurrentOperations=1000000
+NoOfFragmentLogFiles=300
 
 [tcp default]
 # TCP/IP options:
@@ -21,30 +22,49 @@ portnumber=2202   # This the default; however, you can use any
 
 [ndb_mgmd]
 # Management process options:
-hostname=#MGM_NODE_IP           # Hostname or IP address of MGM node
+hostname=172.17.0.3           # Hostname or IP address of MGM node
 datadir=/var/lib/mysql-cluster  # Directory for MGM node log files
 
 [ndbd]
 # Options for data node "A":
-                                # (one [ndbd] section per data node)
-hostname=#DATA_NODE_IP_1        # Hostname or IP address
-datadir=/root/volume/mysql/data # Directory for this data node's data files
+                                        # (one [ndbd] section per data node)
+hostname=172.17.0.5                # Hostname or IP address
+datadir=/root/volume/remote/mysql/data  # Directory for this data node's data files
+id=2
 
 [ndbd]
 # Options for data node "B":
-hostname=#DATA_NODE_IP_2        # Hostname or IP address
-datadir=/usr/local/mysql/data   # Directory for this data node's data files
+hostname=172.17.0.4                # Hostname or IP address
+datadir=/root/volume/local/mysql/data   # Directory for this data node's data files
+id=1
 
 [mysqld]
 # SQL node options:
-hostname=#SQL_NODE_IP_1         # Hostname or IP address
+hostname=172.17.0.11         # Hostname or IP address
                                 # (additional mysqld connections can be
                                 # specified for this node for various
                                 # purposes such as running ndb_restore)
 
 [mysqld]
 # SQL node options:
-hostname=#SQL_NODE_IP_2         # Hostname or IP address
+hostname=172.17.0.10         # Hostname or IP address
                                 # (additional mysqld connections can be
                                 # specified for this node for various
                                 # purposes such as running ndb_restore)
+
+[mysqld]
+# SQL node options:
+hostname=172.17.0.9         # Hostname or IP address
+ 
+[mysqld]
+# SQL node options:
+hostname=172.17.0.8         # Hostname or IP address
+ 
+[mysqld]
+# SQL node options:
+hostname=172.17.0.7         # Hostname or IP address
+ 
+[mysqld]
+# SQL node options:
+hostname=172.17.0.6         # Hostname or IP address
+ 
