@@ -1,159 +1,436 @@
-" URL: http://vim.wikia.com/wiki/Example_vimrc
-" Authors: http://vim.wikia.com/wiki/Vim_on_Freenode
-" Description: A minimal, but feature rich, example .vimrc. If you are a
-"              newbie, basing your first .vimrc on this file is a good choice.
-"              If you're a more advanced user, building your own .vimrc based
-"              on this file is still a good idea.
- 
-"------------------------------------------------------------
-" Features {{{1
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Maintainer: 
+"       Amir Salihefendic
+"       http://amix.dk - amix@amix.dk
 "
-" These options and commands enable some very useful features in Vim, that
-" no user should have to live without.
- 
-" Set 'nocompatible' to ward off unexpected things that your distro might
-" have made, as well as sanely reset options when re-sourcing .vimrc
-set nocompatible
- 
-" Attempt to determine the type of a file based on its name and possibly its
-" contents. Use this to allow intelligent auto-indenting for each filetype,
-" and for plugins that are filetype specific.
-filetype indent plugin on
- 
-" Enable syntax highlighting
-syntax on
- 
- 
-"------------------------------------------------------------
-" Must have options {{{1
+" Version: 
+"       5.0 - 29/05/12 15:43:36
 "
-" These are highly recommended options.
- 
-" Vim with default settings does not allow easy switching between multiple files
-" in the same editor window. Users can use multiple split windows or multiple
-" tab pages to edit multiple files, but it is still best to enable an option to
-" allow easier switching between files.
+" Blog_post: 
+"       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
 "
-" One such option is the 'hidden' option, which allows you to re-use the same
-" window and switch from an unsaved buffer without saving it first. Also allows
-" you to keep an undo history for multiple files when re-using the same window
-" in this way. Note that using persistent undo also lets you undo in multiple
-" files even in the same window, but is less efficient and is actually designed
-" for keeping undo history after closing Vim entirely. Vim will complain if you
-" try to quit without saving, and swap files will keep you safe if your computer
-" crashes.
-set hidden
- 
-" Note that not everyone likes working this way (with the hidden option).
-" Alternatives include using tabs or split windows instead of re-using the same
-" window as mentioned above, and/or either of the following options:
-" set confirm
-" set autowriteall
- 
-" Better command-line completion
+" Awesome_version:
+"       Get this config, nice color schemes and lots of plugins!
+"
+"       Install the awesome version from:
+"
+"           https://github.com/amix/vimrc
+"
+" Syntax_highlighted:
+"       http://amix.dk/vim/vimrc.html
+"
+" Raw_version: 
+"       http://amix.dk/vim/vimrc.txt
+"
+" Sections:
+"    -> General
+"    -> VIM user interface
+"    -> Colors and Fonts
+"    -> Files and backups
+"    -> Text, tab and indent related
+"    -> Visual mode related
+"    -> Moving around, tabs and buffers
+"    -> Status line
+"    -> Editing mappings
+"    -> vimgrep searching and cope displaying
+"    -> Spell checking
+"    -> Misc
+"    -> Helper functions
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=500
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" :W sudo saves the file 
+" (useful for handling the permission-denied error)
+command W w !sudo tee % > /dev/null
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Avoid garbled characters in Chinese language windows OS
+let $LANG='en' 
+set langmenu=en
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+" Turn on the WiLd menu
 set wildmenu
- 
-" Show partial commands in the last line of the screen
-set showcmd
- 
-" Highlight searches (use <C-L> to temporarily turn off highlighting; see the
-" mapping of <C-L> below)
-set hlsearch
- 
-" Modelines have historically been a source of security vulnerabilities. As
-" such, it may be a good idea to disable them and use the securemodelines
-" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
-" set nomodeline
- 
- 
-"------------------------------------------------------------
-" Usability options {{{1
-"
-" These are options that users frequently set in their .vimrc. Some of them
-" change Vim's behaviour in ways which deviate from the true Vi way, but
-" which are considered to add usability. Which, if any, of these options to
-" use is very much a personal preference, but they are harmless.
- 
-" Use case insensitive search, except when using capital letters
-set ignorecase
-set smartcase
- 
-" Allow backspacing over autoindent, line breaks and start of insert action
-set backspace=indent,eol,start
- 
-" When opening a new line and no filetype-specific indenting is enabled, keep
-" the same indent as the line you're currently on. Useful for READMEs, etc.
-set autoindent
- 
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
-set nostartofline
- 
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+else
+    set wildignore+=.git\*,.hg\*,.svn\*
+endif
+
+"Always show current position
 set ruler
- 
-" Always display the status line, even if only one window is displayed
-set laststatus=2
- 
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
- 
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
- 
-" And reset the terminal code for the visual bell. If visualbell is set, and
-" this line is also included, vim will neither flash nor beep. If visualbell
-" is unset, this does nothing.
-set t_vb=
- 
-" Enable use of the mouse for all modes
-set mouse=a
- 
-" Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
+
+" Height of the command bar
 set cmdheight=2
- 
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases 
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch 
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch 
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Add a bit extra margin to the left
+set foldcolumn=1
+
 " Display line numbers on the left
 set number
- 
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
- 
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
- 
- 
-"------------------------------------------------------------
-" Indentation options {{{1
-"
-" Indentation settings according to personal preference.
- 
-" Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
-set shiftwidth=4
-set softtabstop=4
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable 
+
+try
+    colorscheme desert
+catch
+endtry
+
+set background=dark
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions-=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
 set expandtab
- 
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-"set shiftwidth=4
-"set tabstop=4
- 
- 
-"------------------------------------------------------------
-" Mappings {{{1
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+
+""""""""""""""""""""""""""""""
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> # :call VisualSelection('b', '')<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+map <space> /
+map <c-space> ?
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Close the current buffer
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
+" Close all the buffers
+map <leader>ba :bufdo bd<cr>
+
+map <leader>l :bnext<cr>
+map <leader>h :bprevious<cr>
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext 
+
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Specify the behavior when switching between buffers 
+try
+  set switchbuf=useopen,usetab,newtab
+  set stal=2
+catch
+endtry
+
+" Return to last edit position when opening files (You want this!)
+" autocmd BufReadPost *
+"      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+"      \   exe "normal! g`\"" |
+"      \ endif
+" Remember info about open buffers on close
+" set viminfo^=%
+
+
+""""""""""""""""""""""""""""""
+" => Status line
+""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
+endif
+
+" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ag searching and cope displaying
+"    requires ag.vim - it's much better than vimgrep/grep
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" When you press gv you Ag after the selected text
+vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
+
+" Open Ag and put the cursor in the right position
+map <leader>g :Ag 
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+
+" Do :help cope if you are unsure what cope is. It's super useful!
 "
-" Useful mappings
- 
-" Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
-" which is the default
-map Y y$
- 
-" Map <C-L> (redraw screen) to also turn off search highlighting until the
-" next search
-nnoremap <C-L> :nohl<CR><C-L>
- 
-"------------------------------------------------------------
+" When you search with Ag, display your results in cope by doing:
+"   <leader>cc
+"
+" To go to the next search result do:
+"   <leader>n
+"
+" To go to the previous search results do:
+"   <leader>p
+"
+map <leader>cc :botright cope<cr>
+map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+map <leader>n :cn<cr>
+map <leader>p :cp<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Quickly open a buffer for scribble
+map <leader>q :e ~/buffer<cr>
+
+" Quickly open a markdown buffer for scribble
+map <leader>x :e ~/buffer.md<cr>
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction 
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("Ag \"" . l:pattern . "\" " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+" Make VIM remember position in file after reopen
+if has("autocmd")
+   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
