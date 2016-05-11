@@ -144,7 +144,7 @@ set number
 syntax enable 
 
 try
-    colorscheme desert
+    colorscheme murphy
 catch
 endtry
 
